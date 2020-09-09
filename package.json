@@ -1,0 +1,21 @@
+{
+  "name": "home-cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Fox",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "bin": {
+    "home-cli": "./index.js"
+  },
+  "dependencies": {
+    "chalk": "2.4.2",
+    "cli-table": "0.3.1",
+    "dotenv": "^8.2.0",
+    "ewelink-api": "^3.0.0",
+    "figlet": "1.2.1",
+    "inquirer": "6.2.2"
+  }
+}
