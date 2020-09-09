@@ -15,6 +15,8 @@ const connection = new ewelink({
     region: process.env.EWELINK_REGION
 });
 
+const maxNumberMultiSwitchDevices = 2;
+
 //função para gerar tabela
 const showDevicesTable = (devicesData) => {
     const table = new Table({
@@ -26,7 +28,7 @@ const showDevicesTable = (devicesData) => {
         devicesData.map((d) => {
             if (d.params && d.params.switches) {
                 d.params.switches.forEach(s => {
-                    if ((d.name === 'Cozinha' || d.name === 'Sala') && s.outlet < 2) { //soh tenho switch com 2 botoes e o infeliz me retorna 4
+                    if (s.outlet < maxNumberMultiSwitchDevices) { //soh tenho switch com 2 botoes e o infeliz me retorna 4
                         table.push([
                             `${d.name} - ${s.outlet}`, (s.switch && s.switch === 'on' ? chalk.green('On') : chalk.red('Off'))
                         ])
@@ -61,7 +63,7 @@ const mapDevicesToChoices = (devices) => {
     devices.map(d => {
         if (d.params && d.params.switches) {
             d.params.switches.forEach(s => {
-                if ((d.name === 'Cozinha' || d.name === 'Sala') && s.outlet < 2) {
+                if (s.outlet < maxNumberMultiSwitchDevices) {
                     arrayToReturn.push({
                         name: `${d.name} - Channel: ${s.outlet + 1}`,
                         value: {id: d.deviceid, channel: (s.outlet + 1)}
