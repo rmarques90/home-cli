@@ -89,13 +89,15 @@ const initialOptionsInquirer = () => {
             message: 'What do you wanna do?',
             choices: [
                 {name: 'List all devices status', value: 1},
-                {name: 'Toggle some device', value: 2}
+                {name: 'Toggle some device', value: 2},
+                {name: 'Exit', value: 3}
             ]
         }
     ])
         .then( async answer => {
             if (answer.option === 1) {
                 await listDevices();
+                initialOptionsInquirer();
             } else if (answer.option === 2) {
                 let devices = await getDevices();
                 let choices = mapDevicesToChoices(devices);
@@ -119,8 +121,13 @@ const initialOptionsInquirer = () => {
                         } else {
                             console.log(chalk.red('error', response));
                         }
+
+                        initialOptionsInquirer();
                     }
                 })
+            } else if (answer.option === 3) {
+                console.log(chalk.green('Goodbye! =]'));
+                process.exit(1);
             }
         })
 };
