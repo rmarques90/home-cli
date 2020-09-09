@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "chalk": "2.4.2",
-    "cli-table": "0.3.1",
     "dotenv": "^8.2.0",
     "ewelink-api": "^3.0.0",
     "figlet": "1.2.1",
