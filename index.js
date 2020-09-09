@@ -17,10 +17,14 @@ const connection = new ewelink({
     region: process.env.EWELINK_REGION || 'us'
 });
 
-const maxNumberMultiSwitchDevices = 2;
-
 const getDevices = async () => {
     return await connection.getDevices();
+};
+
+//map para adicionar o nome do switch e o numero maximo de canais individuais
+const mapTotalMultiSwitches = {
+    'Sala': 2,
+    'Cozinha': 2
 };
 
 const mapDevicesToChoices = (devices) => {
@@ -32,7 +36,7 @@ const mapDevicesToChoices = (devices) => {
     devices.map(d => {
         if (d.params && d.params.switches) {
             d.params.switches.forEach(s => {
-                if (s.outlet < maxNumberMultiSwitchDevices) {
+                if (s.outlet < mapTotalMultiSwitches[d.name]) {
                     arrayToReturn.push({
                         name: `[${(s.switch && s.switch === 'on' ? chalk.green('On') : chalk.red('Off'))}] ${d.name} - Channel: ${s.outlet + 1}`,
                         value: {id: d.deviceid, channel: (s.outlet + 1), state: s.switch, name: d.name}
@@ -81,7 +85,7 @@ const initialOptionsInquirer = async () => {
                 let device = devicesChoices.find(d => d.value.id === answer.selectedDevice.id && ((d.value.channel !== undefined && d.value.channel === answer.selectedDevice.channel) || d.value.channel === undefined));
                 device.value.state = device.value.state === 'on' ? 'off' : 'on';
             } else {
-                console.log(chalk.red('error', response));
+                console.log(chalk.red('error'), response);
             }
         }
         exit = (answer.selectedDevice === "exit");
